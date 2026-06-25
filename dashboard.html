@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Creator Voice Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #08080f;
+  --surface: #0e0e1c;
+  --surface2: #141428;
+  --accent: #8b5cf6;
+  --accent-hi: #a78bfa;
+  --accent-dim: rgba(139,92,246,0.1);
+  --accent-glow: rgba(139,92,246,0.25);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --discord: #5865f2;
+  --border: rgba(255,255,255,0.06);
+  --border-hi: rgba(139,92,246,0.32);
+  --text: #f1f0ff;
+  --muted: rgba(241,240,255,0.5);
+  --dim: rgba(241,240,255,0.28);
+  --font: 'DM Sans', system-ui, sans-serif;
+  --r: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 32px); max-width: 1100px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 58px;
+  background: rgba(8,8,15,0.82);
+  border: 1px solid var(--border-hi);
+  border-radius: 18px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  z-index: 200;
+}
+.logo {
+  font-size: 15px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none; letter-spacing: -.02em;
+}
+.logo-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #5e9ef5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; flex-shrink: 0;
+}
+.nav-right { display: flex; gap: 8px; align-items: center; }
+.btn {
+  padding: 9px 18px; border-radius: var(--r);
+  font-size: 13px; font-weight: 600; font-family: var(--font);
+  cursor: pointer; border: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; white-space: nowrap; transition: all .18s;
+}
+.btn-ghost {
+  background: transparent; color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-accent:hover { box-shadow: 0 0 20px var(--accent-glow); }
+.user-email {
+  font-size: 12px; color: var(--muted);
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+/* ── PAGE ── */
+.page { padding: 100px 2rem 4rem; max-width: 1100px; margin: 0 auto; }
+
+/* ── LOADING STATE ── */
+.loading-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 60vh; gap: 16px;
+  color: var(--muted);
+}
+.big-spinner {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 3px solid rgba(139,92,246,0.2);
+  border-top-color: var(--accent);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── HEADER ── */
+.dash-header {
+  margin-bottom: 2.5rem;
+}
+.dash-header h1 {
+  font-size: clamp(26px,3.5vw,36px);
+  font-weight: 800; color: #fff; letter-spacing: -.025em;
+  margin-bottom: 6px;
+}
+.dash-header p { font-size: 15px; color: var(--muted); }
+
+/* ── SUCCESS BANNER ── */
+.success-banner {
+  display: none;
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.22);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  display: none; align-items: center; gap: 12px;
+  font-size: 14px; color: #86efac;
+}
+.success-banner.show { display: flex; }
+.success-banner i { font-size: 20px; flex-shrink: 0; }
+
+/* ── SECTION ── */
+.section-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--accent-hi);
+  background: var(--accent-dim);
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(139,92,246,.2);
+  display: inline-block; margin-bottom: 1.25rem;
+}
+.section-title {
+  font-size: 22px; font-weight: 800; color: #fff;
+  letter-spacing: -.02em; margin-bottom: 1.5rem;
+}
+
+/* ── VOICE GRID ── */
+.voice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+  gap: 14px;
+  margin-bottom: 3.5rem;
+}
+.voice-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem 1rem;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  text-align: center;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+  position: relative; overflow: hidden;
+}
+.voice-tile::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  opacity: 0; transition: opacity .25s;
+}
+.voice-tile:hover { border-color: var(--border-hi); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(139,92,246,.12); }
+.voice-tile:hover::before { opacity: 1; }
+.voice-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: rgba(255,255,255,0.8);
+  border: 2px solid rgba(255,255,255,0.07);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+  overflow: hidden; flex-shrink: 0;
+}
+.voice-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.voice-name { font-size: 13px; font-weight: 700; color: #fff; }
+.voice-style { font-size: 11px; color: var(--muted); }
+.dl-btn {
+  margin-top: 4px;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.22);
+  color: #86efac;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: var(--font);
+  display: flex; align-items: center; gap: 5px;
+  transition: all .18s; width: 100%; justify-content: center;
+}
+.dl-btn:hover { background: var(--green); border-color: var(--green); color: #fff; }
+.dl-btn:disabled { opacity: .5; cursor: not-allowed; }
+.dl-btn .spin {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  margin-bottom: 3rem;
+}
+.empty-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--accent-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: var(--accent-hi);
+  margin: 0 auto 1rem; border: 1px solid rgba(139,92,246,.2);
+}
+.empty-state h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.empty-state p { font-size: 14px; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.65; }
+.btn-browse {
+  background: var(--accent); color: #fff;
+  padding: 11px 24px; border-radius: var(--r);
+  font-size: 13px; font-weight: 700;
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 7px;
+  transition: box-shadow .18s;
+}
+.btn-browse:hover { box-shadow: 0 0 20px var(--accent-glow); }
+
+/* ── PURCHASE HISTORY ── */
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.history-pack {
+  font-size: 14px; font-weight: 700; color: #fff; flex: 1;
+}
+.history-voices {
+  font-size: 12px; color: var(--muted); flex-basis: 100%;
+  margin-top: 2px;
+}
+.history-meta {
+  font-size: 12px; color: var(--dim);
+  display: flex; gap: 12px; align-items: center; flex-shrink: 0;
+}
+.history-amount { font-weight: 700; color: var(--text); }
+.history-date { color: var(--dim); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border-hi);
+  color: #fff; font-size: 13px; font-weight: 500;
+  padding: 12px 18px; border-radius: var(--r-lg);
+  z-index: 300; transform: translateY(14px); opacity: 0;
+  transition: all .28s ease; pointer-events: none; max-width: 280px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-icon"><i class="ti ti-microphone-2"></i></div>
+    Creator Voice Tools
+  </a>
+  <div class="nav-right">
+    <span class="user-email" id="userEmail">…</span>
+    <a class="btn btn-ghost" href="/" >
+      <i class="ti ti-home"></i> Home
+    </a>
+    <button class="btn btn-ghost" onclick="logout()">
+      <i class="ti ti-logout"></i> Log out
+    </button>
+  </div>
+</nav>
+
+<div class="page" id="page">
+  <!-- Loading -->
+  <div class="loading-state" id="loadingState">
+    <div class="big-spinner"></div>
+    <span>Loading your account…</span>
+  </div>
+
+  <!-- Main content (hidden until loaded) -->
+  <div id="mainContent" style="display:none">
+
+    <!-- Purchase success banner -->
+    <div class="success-banner" id="successBanner">
+      <i class="ti ti-circle-check"></i>
+      <div>
+        <strong>Purchase confirmed!</strong> Your voices are now available for download below.
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="dash-header">
+      <h1>My Voices</h1>
+      <p id="headerSub">Your purchased presets are ready to download.</p>
+    </div>
+
+    <!-- Voices section -->
+    <div id="voicesSection">
+      <span class="section-label">Your Library</span>
+      <div class="voice-grid" id="voiceGrid"></div>
+    </div>
+
+    <!-- Empty state (shown when no purchases) -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon"><i class="ti ti-microphone-2"></i></div>
+      <h3>No voices yet</h3>
+      <p>You haven't purchased any voice packs yet.<br>Head to the store and pick the voices you want.</p>
+      <a class="btn-browse" href="/#pricing"><i class="ti ti-bolt"></i> Browse packs</a>
+    </div>
+
+    <!-- Purchase history -->
+    <div id="historySection" style="display:none">
+      <span class="section-label">Purchase History</span>
+      <div class="history-list" id="historyList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// All voice metadata (kept in sync with index.html)
+const VOICE_META = {
+  Peterbot:       { style: 'Competitive FN', color: '#8b5cf6' },
+  Clix:           { style: 'Pro player',      color: '#6366f1' },
+  'Nick Eh 30':   { style: 'Hype caster',     color: '#0ea5e9' },
+  Fe4rless:       { style: 'Comedy streamer', color: '#ec4899' },
+  IShowSpeed:     { style: 'Reaction king',   color: '#ef4444' },
+  AsianJeff:      { style: 'Troll content',   color: '#f97316' },
+  SypherPK:       { style: 'Pro analyst',     color: '#10b981' },
+  'Stable Ronaldo':{ style: 'UK streamer',    color: '#f59e0b' },
+  PremFN:         { style: 'Competitive FN',  color: '#8b5cf6' },
+  Lachlan:        { style: 'All-rounder',     color: '#3b82f6' },
+  Sommerset:      { style: 'Chill gaming',    color: '#6366f1' },
+  Kirillian:      { style: 'FPS content',     color: '#14b8a6' },
+};
+
+let allPurchases = [];
+
+const token = localStorage.getItem('cvt_token');
+if (!token) {
+  window.location.href = '/login.html?redirect=dashboard';
+}
+
+async function init() {
+  // Verify token
+  const meRes = await fetch('/api/auth/me', {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  if (!meRes.ok) {
+    localStorage.removeItem('cvt_token');
+    localStorage.removeItem('cvt_email');
+    window.location.href = '/login.html?redirect=dashboard';
+    return;
+  }
+  const me = await meRes.json();
+  document.getElementById('userEmail').textContent = me.email;
+
+  // Check for Stripe session success
+  const params = new URLSearchParams(location.search);
+  const sessionId = params.get('session_id');
+  if (sessionId) {
+    document.getElementById('successBanner').classList.add('show');
+    history.replaceState({}, '', '/dashboard.html');
+    // Give webhook a moment to process
+    await new Promise(r => setTimeout(r, 1500));
+  }
+
+  // Fetch purchases
+  const purchaseRes = await fetch('/api/purchases', {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  allPurchases = await purchaseRes.json();
+
+  // Collect unique owned voices
+  const ownedVoices = [...new Set(allPurchases.flatMap(p => p.voices))];
+
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('mainContent').style.display = '';
+
+  if (ownedVoices.length === 0) {
+    document.getElementById('voicesSection').style.display = 'none';
+    document.getElementById('emptyState').style.display = '';
+    document.getElementById('headerSub').textContent = 'Purchase a pack to see your voices here.';
+  } else {
+    renderVoices(ownedVoices);
+    renderHistory(allPurchases);
+  }
+}
+
+function renderVoices(voices) {
+  const grid = document.getElementById('voiceGrid');
+  grid.innerHTML = voices.map(name => {
+    const meta = VOICE_META[name] || { style: 'Voice preset', color: '#8b5cf6' };
+    const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `
+      <div class="voice-tile">
+        <div class="voice-avatar" style="box-shadow: 0 0 0 3px ${meta.color}22">
+          <span style="background:${meta.color};width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:rgba(255,255,255,0.9);border-radius:50%">${initials}</span>
+        </div>
+        <div class="voice-name">${name}</div>
+        <div class="voice-style">${meta.style}</div>
+        <button class="dl-btn" id="dl-${name.replace(/\s+/g,'-')}" onclick="downloadVoice('${name}', this)">
+          <span class="spin"></span>
+          <i class="ti ti-download"></i> Download
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderHistory(purchases) {
+  if (!purchases.length) return;
+  document.getElementById('historySection').style.display = '';
+  const list = document.getElementById('historyList');
+  list.innerHTML = purchases.map(p => {
+    const date  = new Date(p.purchased_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const amount = p.amount_cents ? '$' + (p.amount_cents / 100).toFixed(2) : '';
+    const voiceText = p.voices.length
+      ? p.voices.length > 5 ? `${p.voices.slice(0,5).join(', ')} +${p.voices.length - 5} more` : p.voices.join(', ')
+      : 'Custom model';
+    return `
+      <div class="history-item">
+        <div>
+          <div class="history-pack">${p.pack_name}</div>
+          <div class="history-voices">${voiceText}</div>
+        </div>
+        <div class="history-meta">
+          ${amount ? `<span class="history-amount">${amount}</span>` : ''}
+          <span class="history-date">${date}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function downloadVoice(name, btn) {
+  const spin = btn.querySelector('.spin');
+  const icon = btn.querySelector('i');
+  btn.disabled = true;
+  spin.style.display = 'block';
+  icon.style.display = 'none';
+
+  try {
+    const res = await fetch(`/api/download/${encodeURIComponent(name)}`, {
+      headers: { Authorization: 'Bearer ' + token }
+    });
+
+    if (res.ok) {
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url;
+      a.download = `${name}-preset.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast(`Downloading ${name}…`);
+    } else {
+      const data = await res.json();
+      showToast(data.error || 'Download failed.');
+    }
+  } catch {
+    showToast('Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    spin.style.display = 'none';
+    icon.style.display = '';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('cvt_token');
+  localStorage.removeItem('cvt_email');
+  window.location.href = '/';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+init().catch(err => {
+  console.error(err);
+  document.getElementById('loadingState').innerHTML = `
+    <div style="color:var(--error,#f87171);text-align:center">
+      <i class="ti ti-alert-circle" style="font-size:32px"></i>
+      <p style="margin-top:12px">Failed to load account. <a href="/login.html" style="color:var(--accent-hi)">Try logging in again</a>.</p>
+    </div>`;
+});
+</script>
+</body>
+</html>
