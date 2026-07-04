@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+node_modules/
+db.sqlite
+db.sqlite-shm
+db.sqlite-wal
+.env

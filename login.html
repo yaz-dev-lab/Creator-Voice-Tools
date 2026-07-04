@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Creator Voice Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #08080f;
+  --surface: #0e0e1c;
+  --surface2: #141428;
+  --accent: #8b5cf6;
+  --accent-hi: #a78bfa;
+  --accent-dim: rgba(139,92,246,0.1);
+  --accent-glow: rgba(139,92,246,0.25);
+  --discord: #5865f2;
+  --border: rgba(255,255,255,0.06);
+  --border-hi: rgba(139,92,246,0.32);
+  --text: #f1f0ff;
+  --muted: rgba(241,240,255,0.5);
+  --dim: rgba(241,240,255,0.28);
+  --error: #f87171;
+  --error-dim: rgba(248,113,113,0.1);
+  --font: 'DM Sans', system-ui, sans-serif;
+  --r: 10px;
+  --r-lg: 14px;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 14px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 32px); max-width: 1100px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 58px;
+  background: rgba(8,8,15,0.82);
+  border: 1px solid var(--border-hi);
+  border-radius: 18px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  z-index: 200;
+}
+.logo {
+  font-size: 15px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none; letter-spacing: -.02em;
+}
+.logo-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #5e9ef5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; flex-shrink: 0;
+}
+
+/* ── LAYOUT ── */
+.page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 500px;
+  background: radial-gradient(ellipse at center, rgba(139,92,246,.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(139,92,246,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,92,246,.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* ── CARD ── */
+.card {
+  position: relative; z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border-hi);
+  border-radius: 20px;
+  padding: 2.25rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 0 60px rgba(139,92,246,0.1);
+}
+.card-logo {
+  display: flex; justify-content: center; margin-bottom: 1.75rem;
+}
+.card-logo a {
+  font-size: 15px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; gap: 9px; text-decoration: none;
+}
+.card-logo .logo-icon { width: 32px; height: 32px; font-size: 15px; }
+
+/* ── TABS ── */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 4px;
+  margin-bottom: 1.75rem;
+}
+.tab-btn {
+  padding: 9px;
+  font-size: 13px; font-weight: 600;
+  font-family: var(--font);
+  color: var(--muted);
+  background: none; border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .18s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── FORM ── */
+.form { display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+label {
+  font-size: 12px; font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase; letter-spacing: .06em;
+}
+input[type="email"], input[type="password"], input[type="text"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-size: 14px; font-family: var(--font);
+  padding: 11px 14px;
+  width: 100%;
+  transition: border-color .18s;
+  outline: none;
+}
+input:focus { border-color: var(--accent); }
+input::placeholder { color: var(--dim); }
+
+/* ── ERROR / SUCCESS ── */
+.alert {
+  display: none;
+  padding: 10px 14px;
+  border-radius: var(--r);
+  font-size: 13px;
+  line-height: 1.5;
+  gap: 8px;
+  align-items: flex-start;
+}
+.alert.show { display: flex; }
+.alert-error { background: var(--error-dim); border: 1px solid rgba(248,113,113,0.25); color: var(--error); }
+.alert-success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.22); color: #86efac; }
+.alert i { flex-shrink: 0; margin-top: 1px; font-size: 15px; }
+
+/* ── SUBMIT BUTTON ── */
+.btn-submit {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  padding: 13px;
+  font-size: 14px; font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: box-shadow .18s, transform .1s, opacity .18s;
+  margin-top: 4px;
+}
+.btn-submit:hover { box-shadow: 0 0 22px var(--accent-glow); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+.spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── DIVIDER ── */
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; color: var(--dim);
+  margin: 4px 0;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+
+/* ── FOOTER ── */
+.card-foot {
+  text-align: center;
+  font-size: 12px; color: var(--dim);
+  margin-top: 1rem;
+}
+.card-foot a { color: var(--muted); text-decoration: none; }
+.card-foot a:hover { color: var(--text); }
+
+/* ── REDIRECT NOTICE ── */
+.redirect-notice {
+  display: none;
+  background: var(--accent-dim);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: var(--r);
+  padding: 10px 14px;
+  font-size: 13px; color: var(--accent-hi);
+  gap: 8px; align-items: center;
+  margin-bottom: 1rem;
+}
+.redirect-notice.show { display: flex; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-icon"><i class="ti ti-microphone-2"></i></div>
+    Creator Voice Tools
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-grid"></div>
+
+  <div class="card">
+    <div class="card-logo">
+      <a href="/">
+        <div class="logo-icon"><i class="ti ti-microphone-2"></i></div>
+        Creator Voice Tools
+      </a>
+    </div>
+
+    <div class="redirect-notice" id="redirectNotice">
+      <i class="ti ti-lock"></i>
+      Log in to complete your purchase.
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Log in</button>
+      <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Create account</button>
+    </div>
+
+    <div class="alert alert-error" id="alertError">
+      <i class="ti ti-alert-circle"></i>
+      <span id="alertErrorMsg"></span>
+    </div>
+    <div class="alert alert-success" id="alertSuccess">
+      <i class="ti ti-circle-check"></i>
+      <span id="alertSuccessMsg"></span>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form class="form" id="loginForm" onsubmit="handleLogin(event)">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button class="btn-submit" type="submit" id="loginBtn">
+        <span class="spinner" id="loginSpinner"></span>
+        <i class="ti ti-login" id="loginIcon"></i>
+        Log in
+      </button>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form class="form" id="registerForm" style="display:none" onsubmit="handleRegister(event)">
+      <div class="field">
+        <label for="regEmail">Email</label>
+        <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="8+ characters" autocomplete="new-password" required minlength="8">
+      </div>
+      <div class="field">
+        <label for="regConfirm">Confirm password</label>
+        <input type="password" id="regConfirm" placeholder="••••••••" autocomplete="new-password" required>
+      </div>
+      <button class="btn-submit" type="submit" id="registerBtn">
+        <span class="spinner" id="registerSpinner"></span>
+        <i class="ti ti-user-plus" id="registerIcon"></i>
+        Create account
+      </button>
+    </form>
+
+    <div class="card-foot">
+      <a href="/">← Back to site</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const redirect = params.get('redirect') || '';
+if (redirect) document.getElementById('redirectNotice').classList.add('show');
+
+// Switch between login/register tabs
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('loginForm').style.display    = isLogin ? '' : 'none';
+  document.getElementById('registerForm').style.display = isLogin ? 'none' : '';
+  document.getElementById('tabLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+  clearAlerts();
+}
+
+// If arriving on register tab from URL
+if (params.get('tab') === 'register') switchTab('register');
+
+function showError(msg) {
+  document.getElementById('alertErrorMsg').textContent = msg;
+  document.getElementById('alertError').classList.add('show');
+  document.getElementById('alertSuccess').classList.remove('show');
+}
+function showSuccess(msg) {
+  document.getElementById('alertSuccessMsg').textContent = msg;
+  document.getElementById('alertSuccess').classList.add('show');
+  document.getElementById('alertError').classList.remove('show');
+}
+function clearAlerts() {
+  document.getElementById('alertError').classList.remove('show');
+  document.getElementById('alertSuccess').classList.remove('show');
+}
+
+function setLoading(btnId, spinnerId, iconId, loading) {
+  document.getElementById(btnId).disabled = loading;
+  document.getElementById(spinnerId).style.display = loading ? 'block' : 'none';
+  document.getElementById(iconId).style.display    = loading ? 'none' : '';
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  clearAlerts();
+  setLoading('loginBtn', 'loginSpinner', 'loginIcon', true);
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) { showError(data.error || 'Login failed.'); return; }
+    saveAuth(data.token, data.email);
+  } catch {
+    showError('Network error. Please try again.');
+  } finally {
+    setLoading('loginBtn', 'loginSpinner', 'loginIcon', false);
+  }
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  clearAlerts();
+  const password = document.getElementById('regPassword').value;
+  const confirm  = document.getElementById('regConfirm').value;
+  if (password !== confirm) { showError('Passwords do not match.'); return; }
+  setLoading('registerBtn', 'registerSpinner', 'registerIcon', true);
+  const email = document.getElementById('regEmail').value.trim();
+
+  try {
+    const res  = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) { showError(data.error || 'Registration failed.'); return; }
+    showSuccess('Account created! Redirecting…');
+    saveAuth(data.token, data.email);
+  } catch {
+    showError('Network error. Please try again.');
+  } finally {
+    setLoading('registerBtn', 'registerSpinner', 'registerIcon', false);
+  }
+}
+
+function saveAuth(token, email) {
+  localStorage.setItem('cvt_token', token);
+  localStorage.setItem('cvt_email', email);
+  const dest = redirect === 'pricing' ? '/index.html#pricing'
+             : redirect === 'dashboard' ? '/dashboard.html'
+             : '/dashboard.html';
+  window.location.href = dest;
+}
+
+// Redirect if already logged in
+const existingToken = localStorage.getItem('cvt_token');
+if (existingToken) {
+  fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + existingToken } })
+    .then(r => { if (r.ok) window.location.href = '/dashboard.html'; })
+    .catch(() => {});
+}
+</script>
+</body>
+</html>
