@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+build/
+.env
+.env.local
+.env*.local
+storage/voices/*
+!storage/voices/.gitkeep
+npm-debug.log*
+.DS_Store
+*.pem
+next-env.d.ts
+tsconfig.tsbuildinfo 
+.claude/settings.local.json 

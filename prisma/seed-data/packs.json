@@ -1,0 +1,43 @@
+[
+  {
+    "id": "starter",
+    "name": "Starter Pack",
+    "priceCents": 2500,
+    "desc": "Try it out without the commitment. Pick any 2 creator voices.",
+    "picks": 2,
+    "tag": null,
+    "feats": [
+      "2 voice presets of your choice",
+      "Works with Discord & OBS",
+      "Basic setup guide"
+    ]
+  },
+  {
+    "id": "creator",
+    "name": "Creator Pack",
+    "priceCents": 4000,
+    "desc": "Most popular option. 5 presets, setup help, and priority support.",
+    "picks": 5,
+    "tag": "Best value",
+    "feats": [
+      "5 voice presets of your choice",
+      "Setup assistance included",
+      "Priority Discord support",
+      "Free updates"
+    ]
+  },
+  {
+    "id": "full",
+    "name": "Full Pack",
+    "priceCents": 8000,
+    "desc": "Every preset in the library. Nothing held back.",
+    "picks": 13,
+    "tag": null,
+    "feats": [
+      "All 13 voice presets",
+      "Setup assistance included",
+      "Priority Discord support",
+      "Free updates"
+    ]
+  }
+]

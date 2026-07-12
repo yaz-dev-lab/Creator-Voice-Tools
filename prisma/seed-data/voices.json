@@ -1,0 +1,132 @@
+[
+  {
+    "slug": "peterbot",
+    "name": "Peterbot",
+    "style": "Competitive FN",
+    "color": "#7c5cbf",
+    "tag": "hot",
+    "initials": "PB",
+    "imageUrl": "/voices/peterbot.jpg",
+    "previewUrl": "/previews/peterbot.wav"
+  },
+  {
+    "slug": "clix",
+    "name": "Clix",
+    "style": "Pro player",
+    "color": "#5865f2",
+    "tag": "hot",
+    "initials": "CX",
+    "imageUrl": "/voices/clix.jpg",
+    "previewUrl": "/previews/clix.wav"
+  },
+  {
+    "slug": "nick-eh-30",
+    "name": "Nick Eh 30",
+    "style": "Hype caster",
+    "color": "#059669",
+    "tag": "fan",
+    "initials": "NE",
+    "imageUrl": "/voices/nick-eh-30.jpg",
+    "previewUrl": "/previews/nick-eh-30.wav"
+  },
+  {
+    "slug": "fe4rless",
+    "name": "Fe4rless",
+    "style": "Comedy streamer",
+    "color": "#dc2626",
+    "tag": "fan",
+    "initials": "F4",
+    "imageUrl": "/voices/fe4rless.jpg",
+    "previewUrl": "/previews/fe4rless.wav"
+  },
+  {
+    "slug": "ishowspeed",
+    "name": "IShowSpeed",
+    "style": "Reaction king",
+    "color": "#d97706",
+    "tag": "hot",
+    "initials": "IS",
+    "imageUrl": "/voices/ishowspeed.jpg",
+    "previewUrl": "/previews/ishowspeed.wav"
+  },
+  {
+    "slug": "asianjeff",
+    "name": "AsianJeff",
+    "style": "Troll content",
+    "color": "#7c3aed",
+    "tag": "fan",
+    "initials": "AJ",
+    "imageUrl": "/voices/asianjeff.jpg",
+    "previewUrl": "/previews/asianjeff.wav"
+  },
+  {
+    "slug": "sypherpk",
+    "name": "SypherPK",
+    "style": "Pro analyst",
+    "color": "#0891b2",
+    "tag": "fan",
+    "initials": "SP",
+    "imageUrl": "/voices/sypherpk.jpg",
+    "previewUrl": "/previews/sypherpk.wav"
+  },
+  {
+    "slug": "stable-ronaldo",
+    "name": "Stable Ronaldo",
+    "style": "UK streamer",
+    "color": "#be185d",
+    "tag": "new",
+    "initials": "SR",
+    "imageUrl": "/voices/stable-ronaldo.jpg",
+    "previewUrl": "/previews/stable-ronaldo.wav"
+  },
+  {
+    "slug": "premfn",
+    "name": "PremFN",
+    "style": "Competitive FN",
+    "color": "#6d28d9",
+    "tag": "fan",
+    "initials": "PF",
+    "imageUrl": "/voices/premfn.jpg",
+    "previewUrl": "/previews/premfn.wav"
+  },
+  {
+    "slug": "lachlan",
+    "name": "Lachlan",
+    "style": "AU creator",
+    "color": "#16a34a",
+    "tag": "fan",
+    "initials": "LC",
+    "imageUrl": "/voices/lachlan.jpg",
+    "previewUrl": "/previews/lachlan.wav"
+  },
+  {
+    "slug": "sommerset",
+    "name": "Sommerset",
+    "style": "Chill gaming",
+    "color": "#0e7490",
+    "tag": "new",
+    "initials": "SM",
+    "imageUrl": "/voices/sommerset.jpg",
+    "previewUrl": "/previews/sommerset.wav"
+  },
+  {
+    "slug": "kirillian",
+    "name": "Kirillian",
+    "style": "FPS content",
+    "color": "#b45309",
+    "tag": "fan",
+    "initials": "KR",
+    "imageUrl": "/voices/kirillian.jpg",
+    "previewUrl": "/previews/kirillian.wav"
+  },
+  {
+    "slug": "joshreyli",
+    "name": "Joshreyli",
+    "style": "Comedy clips",
+    "color": "#9333ea",
+    "tag": "new",
+    "initials": "JR",
+    "imageUrl": "/voices/joshreyli.jpg",
+    "previewUrl": "/previews/joshreyli.wav"
+  }
+]

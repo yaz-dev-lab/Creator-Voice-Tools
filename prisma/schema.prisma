@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String              @id @default(cuid())
+  email         String              @unique
+  passwordHash  String
+  role          Role                @default(CUSTOMER)
+  emailVerified DateTime?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  entitlements  Entitlement[]
+  orders        Order[]
+  sessions      Session[]
+  tokens        VerificationToken[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  userId    String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ipAddress String?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  type      TokenType
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+  @@map("verification_tokens")
+}
+
+model Voice {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  name         String
+  personaName  String        @default("")
+  style        String
+  color        String
+  tag          String
+  initials     String
+  imageUrl     String
+  previewUrl   String?
+  youtubeUrl   String?
+  version      String        @default("1.0.0")
+  fileKey      String
+  active       Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  entitlements Entitlement[]
+  orderItems   OrderItem[]
+  updates      VoiceUpdate[]
+
+  @@map("voices")
+}
+
+model VoiceUpdate {
+  id         String   @id @default(cuid())
+  voiceId    String
+  version    String
+  notes      String
+  releasedAt DateTime @default(now())
+  voice      Voice    @relation(fields: [voiceId], references: [id], onDelete: Cascade)
+
+  @@index([voiceId])
+  @@map("voice_updates")
+}
+
+model Pack {
+  id                 String    @id
+  name               String
+  priceCents         Int
+  currency           String    @default("usd")
+  description        String
+  features           Json
+  voicePicks         Int
+  discountPriceCents Int?
+  discountStartsAt   DateTime?
+  discountEndsAt     DateTime?
+  addonPriceCents    Int?
+  active             Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  orders             Order[]
+
+  @@map("packs")
+}
+
+model Order {
+  id                      String        @id @default(cuid())
+  userId                  String
+  packId                  String
+  stripeCheckoutSessionId String        @unique
+  stripePaymentIntentId   String?
+  amountCents             Int
+  currency                String
+  status                  OrderStatus   @default(PENDING)
+  metadata                Json?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+  entitlements            Entitlement[]
+  items                   OrderItem[]
+  pack                    Pack          @relation(fields: [packId], references: [id])
+  user                    User          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+  voiceId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  voice   Voice  @relation(fields: [voiceId], references: [id])
+
+  @@unique([orderId, voiceId])
+  @@map("order_items")
+}
+
+model Entitlement {
+  id            String    @id @default(cuid())
+  userId        String
+  voiceId       String
+  orderId       String?
+  unlockedAt    DateTime  @default(now())
+  expiresAt     DateTime?
+  revokedAt     DateTime?
+  revokedReason String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voice         Voice     @relation(fields: [voiceId], references: [id])
+
+  @@unique([userId, voiceId])
+  @@index([userId])
+  @@map("entitlements")
+}
+
+model VouchVideo {
+  id         String   @id @default(cuid())
+  youtubeUrl String
+  title      String?
+  createdAt  DateTime @default(now())
+
+  @@map("vouch_videos")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum TokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
